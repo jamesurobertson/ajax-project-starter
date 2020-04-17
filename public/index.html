@@ -19,11 +19,11 @@
           <span class="score">0</span>
         </div>
         <div>
-          <button id="upvote">Upvote</button>
-          <button id="downvote"=>Downvote</button>
+          <button id="upvote" disabled=false>Upvote</button>
+          <button id="downvote" disabled=false>Downvote</button>
         </div>
       </div>
-      <form class="comment-form">
+      <form class="comment-form" disabled=false>
         <div class="user-comment-container">
           <label for="user-comment">Comment:</label>
           <input
@@ -34,7 +34,7 @@
             placeholder=" Add a comment... "
           />
         </div>
-        <input type="submit" value="Submit" />
+        <input id="submitBtn" type="submit" value="Submit"/>
       </form>
       <div class="comments"></div>
     </section>
