@@ -72,6 +72,9 @@ window.addEventListener('DOMContentLoaded', event => {
       const formData = new FormData(myForm);
       fetch('/kitten/comments', { method: 'POST', body: JSON.stringify({ comment: `${formData.get('user-comment')}` }), headers: { 'Content-Type': 'application/json' } })
         .then(res => {
+          if (!res.ok) {
+            return res;
+          }
           return res.json()
         })
         .then(data => {
@@ -83,19 +86,24 @@ window.addEventListener('DOMContentLoaded', event => {
           newComment.appendChild(deleteButton);
           document.querySelector('.comments').appendChild(newComment);
         })
+        .catch(error => error.json()
+          .then(errJSON => document.querySelector('.error').innerHTML = errJSON.message))
     })
 
   document.querySelector('.comments')
     .addEventListener('click', event => {
-      if(event.target.id.slice(0, 8) === 'comment-') {
+      if (event.target.id.slice(0, 8) === 'comment-') {
         let targetCommentId = event.target.id.slice(8);
-        fetch(`/kitten/comments/${targetCommentId}`, {method: 'DELETE'})
+        fetch(`/kitten/comments/${targetCommentId}`, { method: 'DELETE' })
           .then(res => {
+            if (!res.ok) {
+              return res;
+            }
             return res.json()
           })
           .then(data => {
             document.querySelector('.comments').innerHTML = "";
-            data.comments.forEach ((comment, index) => {
+            data.comments.forEach((comment, index) => {
               let newComment = document.createElement('div');
               let deleteButton = document.createElement('button');
               deleteButton.setAttribute('id', `comment-${index}`);
@@ -105,6 +113,8 @@ window.addEventListener('DOMContentLoaded', event => {
               document.querySelector('.comments').appendChild(newComment);
             })
           })
+          .catch(error => error.json()
+            .then(errJSON => document.querySelector('.error').innerHTML = errJSON.message))
       }
     })
 })
